@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'sign_in.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+  final bool isStudent;
+
+  const SignUpPage({super.key, required this.isStudent});
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +150,12 @@ class SignUpPage extends StatelessWidget {
                 // Link ke Sign In
                 GestureDetector(
                   onTap: () {
-                    Navigator.pop(context); // Kembali ke SignInPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignInPage(),
+                      ),
+                    );
                   },
                   child: const Text.rich(
                     TextSpan(

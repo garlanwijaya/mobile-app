@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'sign_up.dart';
+import 'RoleSelectionPage.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -107,7 +108,9 @@ class SignInPage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignUpPage()),
+                      MaterialPageRoute(
+                        builder: (context) => const RoleSelectionPage(),
+                      ),
                     );
                   },
                   child: const Text.rich(
