@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'SubjectDetailsPage.dart';
 import 'meeting.dart';
+import 'sortButton.dart';
+import 'navbar.dart';
+
 
 Widget buildSubjectButton(BuildContext context, String title) {
   final meetings = generateMockMeetings(); // Data statis untuk simulasi
@@ -50,18 +53,18 @@ class BerandaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 243, 243, 243),
       body: SafeArea(
         child: Column(
           children: [
             // Header
             Container(
-              margin: const EdgeInsets.all(16),
+              margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blue[700], // Warna latar biru lebih gelap
+                color: Color(0xFF4D6FCE),
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
+                  topLeft: Radius.circular(0),
                   topRight: Radius.circular(0),
                   bottomLeft: Radius.circular(0),
                   bottomRight: Radius.circular(32),
@@ -94,14 +97,15 @@ class BerandaPage extends StatelessWidget {
             ),
 
             // Sort Button
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
+            Container(
+              margin: const EdgeInsets.only(left: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Container(
+                  height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.lightBlue, // Warna solid light blue
-                    borderRadius: BorderRadius.circular(24), // Sudut melengkung
+                    color: Colors.lightBlue,
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -112,7 +116,12 @@ class BerandaPage extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SortButtonPage()),
+                      );
+                    },
                     child: const Text(
                       "sort by day",
                       style: TextStyle(
@@ -129,9 +138,10 @@ class BerandaPage extends StatelessWidget {
             // List Mata Pelajaran
             Expanded(
               child: Container(
+                height: 400,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                 ),
                 child: Column(
@@ -149,25 +159,18 @@ class BerandaPage extends StatelessWidget {
         ),
       ),
 
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue[700],
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code_scanner),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '',
-          ),
-        ],
+      bottomNavigationBar: navbar(
+        currentIndex: 0, // Ganti sesuai halaman (0 = home, 1 = scan, 2 = profile)
+        onTap: (index) {
+          // Navigasi sesuai index
+          if (index == 0) {
+            Navigator.pushReplacementNamed(context, '/beranda');
+          } else if (index == 1) {
+            Navigator.pushReplacementNamed(context, '/scan');
+          } else if (index == 2) {
+            Navigator.pushReplacementNamed(context, '/profile');
+          }
+        },
       ),
     );
   }
