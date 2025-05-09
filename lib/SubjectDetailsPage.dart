@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'meeting.dart';
+import 'navbar.dart';
 
 class SubjectDetailsPage extends StatelessWidget {
   final String subjectName;
@@ -14,6 +15,7 @@ class SubjectDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: subjectName,
         height: 60,
@@ -24,39 +26,52 @@ class SubjectDetailsPage extends StatelessWidget {
           children: [
             const SizedBox(height: 16),
             Expanded(
-              child: ListView.builder(
-                itemCount: meetings.length,
-                itemBuilder: (context, index) {
-                  final meeting = meetings[index];
-                  return Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          "Pertemuan ${index + 1}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+              child: Container(
+                child: ListView.builder(
+                  itemCount: meetings.length,
+                  itemBuilder: (context, index) {
+                    final meeting = meetings[index];
+                    return Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            "Pertemuan ${index + 1}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          trailing: CircleAvatar(
+                            radius: 10,
+                            backgroundColor: meeting.isPresent ? Colors.green : Colors.red,
                           ),
                         ),
-                        trailing: CircleAvatar(
-                          radius: 10,
-                          backgroundColor: meeting.isPresent ? Colors.green : Colors.red,
+                        const Divider(
+                          thickness: 1,
+                          color: Colors.black,
+                          height: 0,
+                          indent: 16,
+                          endIndent: 16,
                         ),
-                      ),
-                      const Divider(
-                        thickness: 1,
-                        color: Colors.black,
-                        height: 0,
-                        indent: 16,
-                        endIndent: 16,
-                      ),
-                    ],
-                  );
-                }
-
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: navbar(
+        currentIndex: 0, 
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacementNamed(context, '/beranda');
+          } else if (index == 1) {
+            Navigator.pushReplacementNamed(context, '/scan');
+          } else if (index == 2) {
+            Navigator.pushReplacementNamed(context, '/profile');
+          }
+        },
       ),
     );
   }
