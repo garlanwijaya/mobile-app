@@ -78,7 +78,6 @@ class RekapitulasiMurid extends StatelessWidget {
   }
 }
 
-// Tambahkan AppBar kustom seperti di SubjectDetailsPage
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final double height;
@@ -92,48 +91,43 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }) : super(key: key);
 
   @override
-  Size get preferredSize => Size.fromHeight(height);
+  Size get preferredSize =>
+      Size.fromHeight(height + MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top);
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double appBarWidth = screenWidth * widthFactor;
 
-    return Align(
-      alignment: Alignment.topLeft,
+    return SafeArea(
       child: Container(
-        height: height,
         width: appBarWidth,
-        decoration: BoxDecoration(
-          color: Colors.blue[700],
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(0),
-            bottomLeft: Radius.circular(0),
+        height: height,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: const BoxDecoration(
+          color: Color(0xFF4D6FCE),
+          borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(32),
           ),
         ),
-        child: SafeArea(
-          bottom: false,
-          child: Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.pop(context),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+        child: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

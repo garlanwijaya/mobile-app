@@ -22,20 +22,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double appBarWidth = screenWidth * widthFactor;
 
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Container(
-        height: height,
-        width: appBarWidth,
-        decoration: const BoxDecoration(
-          color: Color(0xFF4D6FCE),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            bottomRight: Radius.circular(32),
+    return SafeArea(
+      bottom: false,
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Container(
+          height: height,
+          width: appBarWidth,
+          decoration: const BoxDecoration(
+            color: Color(0xFF4D6FCE),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(0),
+              bottomRight: Radius.circular(32),
+            ),
           ),
-        ),
-        child: SafeArea(
-          bottom: false,
           child: Row(
             children: [
               IconButton(

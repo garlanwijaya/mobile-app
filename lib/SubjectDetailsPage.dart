@@ -26,43 +26,41 @@ class SubjectDetailsPage extends StatelessWidget {
           children: [
             const SizedBox(height: 16),
             Expanded(
-              child: Container(
-                child: ListView.builder(
-                  itemCount: meetings.length,
-                  itemBuilder: (context, index) {
-                    final meeting = meetings[index];
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            "Pertemuan ${index + 1}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          trailing: CircleAvatar(
-                            radius: 10,
-                            backgroundColor: meeting.isPresent ? Colors.green : Colors.red,
+              child: ListView.builder(
+                itemCount: meetings.length,
+                itemBuilder: (context, index) {
+                  final meeting = meetings[index];
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          "Pertemuan ${index + 1}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Divider(
-                          thickness: 1,
-                          color: Colors.black,
-                          height: 0,
-                          indent: 16,
-                          endIndent: 16,
+                        trailing: CircleAvatar(
+                          radius: 10,
+                          backgroundColor: meeting.isPresent ? Colors.green : Colors.red,
                         ),
-                      ],
-                    );
-                  },
-                ),
+                      ),
+                      const Divider(
+                        thickness: 1,
+                        color: Colors.black,
+                        height: 0,
+                        indent: 16,
+                        endIndent: 16,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
       bottomNavigationBar: navbar(
-        currentIndex: 0, 
+        currentIndex: 0,
         onTap: (index) {
           if (index == 0) {
             Navigator.pushReplacementNamed(context, '/beranda');
@@ -97,22 +95,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double appBarWidth = screenWidth * widthFactor;
 
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Container(
-        height: height,
-        width: appBarWidth,
-        decoration: BoxDecoration(
-          color: Colors.blue[700],
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(0),
-            bottomLeft: Radius.circular(0),
-            bottomRight: Radius.circular(32),
+    return SafeArea(
+      bottom: false,
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Container(
+          height: height,
+          width: appBarWidth,
+          decoration: BoxDecoration(
+            color: Colors.blue[700],
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(0),
+              topRight: Radius.circular(0),
+              bottomLeft: Radius.circular(0),
+              bottomRight: Radius.circular(32),
+            ),
           ),
-        ),
-        child: SafeArea(
-          bottom: false,
           child: Row(
             children: [
               IconButton(
