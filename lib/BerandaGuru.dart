@@ -56,7 +56,7 @@ class BerandaGuru extends StatelessWidget {
                 children: const [
                   Expanded(
                     child: Text(
-                      "Selamat Datang,\nAshoka!",
+                      "Selamat Datang,\nGarland!",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
