@@ -1,14 +1,4 @@
-<<<<<<< HEAD
-import 'package:flutter/material.dart';
-import 'sign_in.dart';
-=======
 // import 'dart:io' show Platform;
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
->>>>>>> origin/front-end-murid
-
-// import 'BerandaPage.dart';
-// import 'sign_in.dart';
 // import 'navbar.dart';
 // import 'Profile.dart';
 
