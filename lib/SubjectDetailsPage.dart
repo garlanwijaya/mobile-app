@@ -6,10 +6,10 @@ class SubjectDetailsPage extends StatelessWidget {
   final List<Meeting> meetings;
 
   const SubjectDetailsPage({
-    Key? key,
+    super.key,
     required this.subjectName,
     required this.meetings,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +68,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double widthFactor;
 
   const CustomAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.height = 60,
     this.widthFactor = 1.0, // Default 100% layar
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => Size.fromHeight(height);
