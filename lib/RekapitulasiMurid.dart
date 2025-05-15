@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'meeting.dart';
-import 'navbar.dart';
+import 'navbarGuru.dart';
 
-class SubjectDetailsPage extends StatelessWidget {
-  final String subjectName;
-  final List<Meeting> meetings;
+class RekapitulasiMurid extends StatelessWidget {
+  final String name;
 
-  const SubjectDetailsPage({
-    super.key,
-    required this.subjectName,
-    required this.meetings,
-  });
+  const RekapitulasiMurid({Key? key, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Data dummy rekapitulasi
+    final List<Map<String, dynamic>> pertemuan = [
+      {'pertemuan': 'Pertemuan 1', 'status': true},
+      {'pertemuan': 'Pertemuan 2', 'status': true},
+      {'pertemuan': 'Pertemuan 3', 'status': false},
+      {'pertemuan': 'Pertemuan 4', 'status': true},
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        title: subjectName,
+        title: "Rekapitulasi - $name",
         height: 60,
         widthFactor: 0.95,
       ),
@@ -26,50 +28,49 @@ class SubjectDetailsPage extends StatelessWidget {
           children: [
             const SizedBox(height: 16),
             Expanded(
-              child: Container(
-                child: ListView.builder(
-                  itemCount: meetings.length,
-                  itemBuilder: (context, index) {
-                    final meeting = meetings[index];
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            "Pertemuan ${index + 1}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          trailing: CircleAvatar(
-                            radius: 10,
-                            backgroundColor: meeting.isPresent ? Colors.green : Colors.red,
+              child: ListView.builder(
+                itemCount: pertemuan.length,
+                itemBuilder: (context, index) {
+                  final data = pertemuan[index];
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          data['pertemuan'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Divider(
-                          thickness: 1,
-                          color: Colors.black,
-                          height: 0,
-                          indent: 16,
-                          endIndent: 16,
+                        trailing: CircleAvatar(
+                          radius: 10,
+                          backgroundColor:
+                              data['status'] ? Colors.green : Colors.red,
                         ),
-                      ],
-                    );
-                  },
-                ),
+                      ),
+                      const Divider(
+                        thickness: 1,
+                        color: Colors.black,
+                        height: 0,
+                        indent: 16,
+                        endIndent: 16,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: navbar(
-        currentIndex: 0, 
+      bottomNavigationBar: navbarGuru(
+        currentIndex: 0,
         onTap: (index) {
           if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/beranda');
+            Navigator.pushReplacementNamed(context, '/berandaGuru');
           } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/scan');
+            Navigator.pushReplacementNamed(context, '/rekapGuru');
           } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profile');
+            Navigator.pushReplacementNamed(context, '/profileGuru');
           }
         },
       ),
@@ -77,17 +78,18 @@ class SubjectDetailsPage extends StatelessWidget {
   }
 }
 
+// Tambahkan AppBar kustom seperti di SubjectDetailsPage
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final double height;
   final double widthFactor;
 
   const CustomAppBar({
-    super.key,
+    Key? key,
     required this.title,
     this.height = 60,
-    this.widthFactor = 1.0, // Default 100% layar
-  });
+    this.widthFactor = 1.0,
+  }) : super(key: key);
 
   @override
   Size get preferredSize => Size.fromHeight(height);
