@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'sign_in.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   final bool isStudent;
 
   const SignUpPage({super.key, required this.isStudent});
+
+  @override
+  State<SignUpPage> createState() => SignUpPageState();
+}
+
+class SignUpPageState extends State<SignUpPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  String? selectedRole;
+  final List<String> roles = ['Siswa', 'Guru'];
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +36,12 @@ class SignUpPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Image.asset(
-                  'assets/logo.png', // Ganti sesuai path logo kamu
+                  'assets/logo.png',
                   height: 80,
                 ),
                 const SizedBox(height: 24),
 
-                // Container putih untuk form
+                // Container Form
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -38,87 +52,54 @@ class SignUpPage extends StatelessWidget {
                     children: [
                       // Email
                       TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          floatingLabelStyle: const TextStyle(color: Colors.black),
-                          filled: true,
-                          fillColor: const Color(0xFFF0F0F0),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                        ),
+                        controller: emailController,
+                        decoration: inputDecoration('Email'),
                       ),
                       const SizedBox(height: 12),
 
                       // Username
                       TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Username',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          floatingLabelStyle: const TextStyle(color: Colors.black),
-                          filled: true,
-                          fillColor: const Color(0xFFF0F0F0),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                        ),
+                        controller: usernameController,
+                        decoration: inputDecoration('Username'),
                       ),
                       const SizedBox(height: 12),
 
-                      // Create Password
+                      // Password
                       TextFormField(
+                        controller: passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: 'Create Password',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          floatingLabelStyle: const TextStyle(color: Colors.black),
-                          filled: true,
-                          fillColor: const Color(0xFFF0F0F0),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                        ),
+                        decoration: inputDecoration('Create Password'),
                       ),
                       const SizedBox(height: 12),
 
                       // Confirm Password
                       TextFormField(
+                        controller: confirmPasswordController,
                         obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: 'Confirm Password',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          floatingLabelStyle: const TextStyle(color: Colors.black),
-                          filled: true,
-                          fillColor: const Color(0xFFF0F0F0),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                        ),
+                        decoration: inputDecoration('Confirm Password'),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Dropdown Role
+                      DropdownButtonFormField<String>(
+                        value: selectedRole,
+                        hint: const Text('Pilih Role'),
+                        items: roles.map((String role) {
+                          return DropdownMenuItem<String>(
+                            value: role,
+                            child: Text(role),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedRole = value;
+                          });
+                        },
+                        decoration: inputDecoration('Role'),
                       ),
                       const SizedBox(height: 24),
 
-                      // Sign Up Button
+                      // Tombol Sign Up
                       SizedBox(
                         width: double.infinity,
                         child: TextButton(
@@ -129,8 +110,87 @@ class SignUpPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          onPressed: () {
-                            // TODO: Implement sign up logic
+                          onPressed: () async {
+                            final email = emailController.text.trim();
+                            final username = usernameController.text.trim();
+                            final password = passwordController.text;
+                            final confirmPassword = confirmPasswordController.text;
+
+                            if (email.isEmpty ||
+                                username.isEmpty ||
+                                password.isEmpty ||
+                                confirmPassword.isEmpty ||
+                                selectedRole == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Harap isi semua field dan pilih role')),
+                              );
+                              return;
+                            }
+
+                            if (password != confirmPassword) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Password tidak cocok')),
+                              );
+                              return;
+                            }
+
+                            try {
+                              // Start a Firestore batch
+                              final batch = FirebaseFirestore.instance.batch();
+
+                              // Create user document
+                              final userRef = FirebaseFirestore.instance.collection('users').doc();
+                              batch.set(userRef, {
+                                'email': email,
+                                'username': username,
+                                'role': selectedRole,
+                                'password': password,
+                                'created_at': Timestamp.now(),
+                              });
+
+                              // Create collections
+                              if (selectedRole == 'Siswa') {
+                                final collections = ['Matematika', 'Fisika', 'Kimia'];
+                                for (var collection in collections) {
+                                  for (int i = 1; i <= 20; i++) {
+                                    final scheduleRef = userRef
+                                        .collection(collection)
+                                        .doc('schedule_$i');
+                                    batch.set(scheduleRef, {
+                                      'schedule_number': i,
+                                      'created_at': Timestamp.now(),
+                                      'status': false,
+                                    });
+                                  }
+                                }
+                              }
+
+                              // Commit the batch
+                              await batch.commit();
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Registrasi berhasil')),
+                              );
+
+                              // Clear input
+                              emailController.clear();
+                              usernameController.clear();
+                              passwordController.clear();
+                              confirmPasswordController.clear();
+                              setState(() {
+                                selectedRole = null;
+                              });
+
+                              // Navigasi ke login
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginPage()),
+                              );
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Gagal menyimpan data: $e')),
+                              );
+                            }
                           },
                           child: const Text(
                             'Sign Up',
@@ -153,7 +213,7 @@ class SignUpPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SignInPage(),
+                        builder: (context) => const LoginPage(),
                       ),
                     );
                   },
@@ -177,6 +237,24 @@ class SignUpPage extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  InputDecoration inputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.black),
+      floatingLabelStyle: const TextStyle(color: Colors.black),
+      filled: true,
+      fillColor: const Color(0xFFF0F0F0),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Colors.black, width: 0.5),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Colors.black, width: 0.5),
       ),
     );
   }

@@ -62,3 +62,4 @@ class NavbarPage extends StatelessWidget {
         ));
   }
 }
+

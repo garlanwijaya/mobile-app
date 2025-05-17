@@ -71,7 +71,7 @@ class SubjectGenerateQR extends StatefulWidget {
 }
 
 class _SubjectGenerateQRState extends State<SubjectGenerateQR> {
-  int pertemuan = 4;
+  int pertemuan = 1;
   int durasi = 30;
 
   @override

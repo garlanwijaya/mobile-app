@@ -114,12 +114,12 @@ class BerandaPage extends StatelessWidget {
             //           ),
             //           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             //         ),
-            //         onPressed: () {
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(builder: (context) => const SortButtonPage()),
-            //           );
-            //         },
+                    // onPressed: () {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(builder: (context) => const SortButtonPage()),
+                    //   );
+                    // },
             //         child: const Text(
             //           "sort by day",
             //           style: TextStyle(

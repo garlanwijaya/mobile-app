@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'SubjectGenerateQR.dart';
 
 Widget buildSubjectButton(BuildContext context, String title) {
@@ -32,6 +33,27 @@ Widget buildSubjectButton(BuildContext context, String title) {
 
 class BerandaGuru extends StatelessWidget {
   const BerandaGuru({super.key});
+
+  // ✅ Fungsi untuk tambah dummy data ke Firestore
+  Future<void> addDummyData(BuildContext context) async {
+    try {
+      CollectionReference users = FirebaseFirestore.instance.collection('users');
+      await users.add({
+        'name': 'Garland Guru',
+        'role': 'teacher',
+        'email': 'garland@example.com',
+        'createdAt': Timestamp.now(),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('✅ Dummy data berhasil ditambahkan ke Firestore')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('❌ Gagal menambahkan data: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +95,7 @@ class BerandaGuru extends StatelessWidget {
               ),
             ),
 
-            // List Mata Pelajaran
+            // List Mata Pelajaran dan Tombol Test
             Expanded(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -84,6 +106,8 @@ class BerandaGuru extends StatelessWidget {
                     buildSubjectButton(context, "Matematika"),
                     buildSubjectButton(context, "Fisika"),
                     buildSubjectButton(context, "Kimia"),
+
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

@@ -1,8 +1,71 @@
 import 'package:flutter/material.dart';
-import 'RoleSelectionPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'navbar.dart';
+import 'navbarGuru.dart';
+import 'sign_up.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => LoginPageState();
+}
+
+class LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  bool isLoading = false;
+
+  Future<void> loginUser() async {
+    setState(() => isLoading = true);
+
+    final email = emailController.text.trim();
+    final password = passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      _showMessage('Harap isi email dan password');
+      setState(() => isLoading = false);
+      return;
+    }
+
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .where('password', isEqualTo: password)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final userData = querySnapshot.docs.first.data();
+        final role = userData['role'] ?? 'Siswa';
+
+        if (role == 'Siswa') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => NavbarPage()),
+          );
+        } else if (role == 'Guru') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => NavbarGuruPage()),
+          );
+        } else {
+          _showMessage('Role tidak dikenali.');
+        }
+      } else {
+        _showMessage('Email atau password salah.');
+      }
+    } catch (e) {
+      _showMessage('Login gagal: $e');
+    }
+
+    setState(() => isLoading = false);
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +78,17 @@ class SignInPage extends StatelessWidget {
             child: Column(
               children: [
                 const Text(
-                  "Welcome to",
+                  "Login to",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Image.asset(
-                  'assets/logo.png', // Ganti dengan path logo kamu
+                  'assets/logo.png',
                   height: 80,
                 ),
                 const SizedBox(height: 24),
 
-                // Container putih untuk form
+                // Container Form
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -34,46 +97,22 @@ class SignInPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      // Username
+                      // Email
                       TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Username',
-                          labelStyle: TextStyle(color: Colors.black),
-                          floatingLabelStyle: TextStyle(color: Colors.black),
-                          filled: true,
-                          fillColor: const Color(0xFFF0F0F0),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                        ),
+                        controller: emailController,
+                        decoration: inputDecoration('Email'),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 12),
+
                       // Password
                       TextFormField(
+                        controller: passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          labelStyle: TextStyle(color: Colors.black),
-                          floatingLabelStyle: TextStyle(color: Colors.black),
-                          filled: true,
-                          fillColor: const Color(0xFFF0F0F0),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.black, width: 0.5),
-                          ),
-                        ),
+                        decoration: inputDecoration('Password'),
                       ),
                       const SizedBox(height: 24),
-                      // Sign In Button
+
+                      // Tombol Login
                       SizedBox(
                         width: double.infinity,
                         child: TextButton(
@@ -84,16 +123,16 @@ class SignInPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          onPressed: () {
-                            // TODO: Login logic
-                          },
-                          child: const Text(
-                            'Sign In',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          onPressed: isLoading ? null : loginUser,
+                          child: isLoading
+                              ? const CircularProgressIndicator()
+                              : const Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
                     ],
@@ -105,10 +144,10 @@ class SignInPage extends StatelessWidget {
                 // Link ke Sign Up
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RoleSelectionPage(),
+                        builder: (context) => const SignUpPage(isStudent: true),
                       ),
                     );
                   },
@@ -117,7 +156,7 @@ class SignInPage extends StatelessWidget {
                       text: "Don't have an account? ",
                       children: [
                         TextSpan(
-                          text: "Sign Up",
+                          text: "Register",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline,
@@ -132,6 +171,24 @@ class SignInPage extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  InputDecoration inputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.black),
+      floatingLabelStyle: const TextStyle(color: Colors.black),
+      filled: true,
+      fillColor: const Color(0xFFF0F0F0),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Colors.black, width: 0.5),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Colors.black, width: 0.5),
       ),
     );
   }

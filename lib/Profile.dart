@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'sign_up.dart';
 
 // Widget header modular untuk siswa
 class StudentProfileHeader extends StatelessWidget {
@@ -107,7 +108,12 @@ class ProfileSiswa extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: ElevatedButton(
-                onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SignUpPage(isStudent: true)),
+                      );
+                    },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   fixedSize: const Size(160, 48),

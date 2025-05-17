@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "744971965093",
+    "project_id": "digitend-79f63",
+    "storage_bucket": "digitend-79f63.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744971965093:android:b725db1f1c5d1fc3e8f34c",
+        "android_client_info": {
+          "package_name": "com.example.my_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtQKyrcSh8jYtunu6MIvRX2opowar5RaQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744971965093:android:8d6d0298c9286dc5e8f34c",
+        "android_client_info": {
+          "package_name": "digit.tend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtQKyrcSh8jYtunu6MIvRX2opowar5RaQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
