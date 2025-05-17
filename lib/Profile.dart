@@ -1,104 +1,6 @@
 import 'package:flutter/material.dart';
-import 'navbar.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF9F7F3),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Header siswa
-            const StudentProfileHeader(
-              name: 'Ashoka Tatang Solihin',
-              role: 'Student',
-              avatarPath: 'assets/avatar.png',
-            ),
-            const SizedBox(height: 32),
-
-            // Menu teks
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  menuItem('Help and Support'),
-                  menuItem('Term and Police'),
-                  menuItem('About'),
-                ],
-              ),
-            ),
-
-            const Spacer(),
-
-            // Tombol Logout
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  fixedSize: const Size(160, 48),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                ),
-                child: const Text(
-                  'Logout',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: navbar(
-        currentIndex: 2,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/beranda');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/scan');
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profile');
-          }
-        },
-      ),
-    );
-  }
-
-  // Widget menu teks
-  Widget menuItem(String text) {
-    return Column(
-      children: [
-        InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  text,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black54),
-              ],
-            ),
-          ),
-        ),
-        const Divider(thickness: 1),
-      ],
-    );
-  }
-}
-
-// Komponen Student Header modular di bawah sini
+// Widget header modular untuk siswa
 class StudentProfileHeader extends StatelessWidget {
   final String name;
   final String role;
@@ -165,6 +67,91 @@ class StudentProfileHeader extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+// Halaman Profile Siswa
+class ProfileSiswa extends StatelessWidget {
+  const ProfileSiswa({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF9F7F3),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const StudentProfileHeader(
+              name: 'Ashoka Tatang Solihin',
+              role: 'Student',
+              avatarPath: 'assets/avatar.png',
+            ),
+            const SizedBox(height: 32),
+
+            // Menu teks dengan garis bawah
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  menuItem('Help and Support'),
+                  menuItem('Term and Police'),
+                  menuItem('About'),
+                ],
+              ),
+            ),
+
+            const Spacer(),
+
+            // Tombol Logout Merah
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  fixedSize: const Size(160, 48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                ),
+                child: const Text(
+                  'Logout',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Widget untuk menu teks dengan garis bawah
+  Widget menuItem(String text) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {},
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  text,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black54),
+              ],
+            ),
+          ),
+        ),
+        const Divider(thickness: 1),
+      ],
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'meeting.dart';
-import 'navbar.dart';
 
 class SubjectDetailsPage extends StatelessWidget {
   final String subjectName;
@@ -58,18 +57,6 @@ class SubjectDetailsPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: navbar(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/beranda');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/scan');
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profile');
-          }
-        },
       ),
     );
   }

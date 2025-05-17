@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'navbarGuru.dart';
 
 // Widget header modular
 class GuruProfileHeader extends StatelessWidget {
@@ -124,18 +123,6 @@ class ProfileGuru extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: navbarGuru(
-        currentIndex: 2,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/berandaGuru');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/rekapGuru');
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profileGuru');
-          }
-        },
       ),
     );
   }

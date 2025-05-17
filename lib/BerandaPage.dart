@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'SubjectDetailsPage.dart';
 import 'meeting.dart';
-import 'sortButton.dart';
-import 'navbar.dart';
 
 
 Widget buildSubjectButton(BuildContext context, String title) {
@@ -97,43 +95,43 @@ class BerandaPage extends StatelessWidget {
             ),
 
             // Sort Button
-            Container(
-              margin: const EdgeInsets.only(left: 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SortButtonPage()),
-                      );
-                    },
-                    child: const Text(
-                      "sort by day",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // Container(
+            //   margin: const EdgeInsets.only(left: 16),
+            //   child: Align(
+            //     alignment: Alignment.centerLeft,
+            //     child: Container(
+            //       height: 40,
+            //       decoration: BoxDecoration(
+            //         color: Colors.lightBlue,
+            //         borderRadius: BorderRadius.circular(16),
+            //       ),
+            //       child: ElevatedButton(
+            //         style: ElevatedButton.styleFrom(
+            //           backgroundColor: Colors.transparent,
+            //           shadowColor: Colors.transparent,
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(24),
+            //           ),
+            //           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            //         ),
+            //         onPressed: () {
+            //           Navigator.push(
+            //             context,
+            //             MaterialPageRoute(builder: (context) => const SortButtonPage()),
+            //           );
+            //         },
+            //         child: const Text(
+            //           "sort by day",
+            //           style: TextStyle(
+            //             color: Colors.black,
+            //             fontWeight: FontWeight.bold,
+            //             fontSize: 12,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             // List Mata Pelajaran
             Expanded(
@@ -157,20 +155,6 @@ class BerandaPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-
-      bottomNavigationBar: navbar(
-        currentIndex: 0, // Ganti sesuai halaman (0 = home, 1 = scan, 2 = profile)
-        onTap: (index) {
-          // Navigasi sesuai index
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/beranda');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/scan');
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profile');
-          }
-        },
       ),
     );
   }

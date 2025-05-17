@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'SubjectGenerateQR.dart';
-import 'navbarGuru.dart';
 
 Widget buildSubjectButton(BuildContext context, String title) {
   return Container(
@@ -91,18 +90,6 @@ class BerandaGuru extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: navbarGuru(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/berandaGuru');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/rekapGuru');
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profileGuru');
-          }
-        },
       ),
     );
   }

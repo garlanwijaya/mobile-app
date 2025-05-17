@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'navbarGuru.dart';
 
 class RekapitulasiMurid extends StatelessWidget {
   final String name;
@@ -61,18 +60,6 @@ class RekapitulasiMurid extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: navbarGuru(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/berandaGuru');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/rekapGuru');
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profileGuru');
-          }
-        },
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'navbarGuru.dart';
 import 'RekapitulasiMurid.dart';
 
 class RekapGuru extends StatefulWidget {
@@ -184,18 +183,6 @@ class _RekapGuruState extends State<RekapGuru> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: navbarGuru(
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/berandaGuru');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/rekapGuru');
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/profileGuru');
-          }
-        },
       ),
     );
   }
