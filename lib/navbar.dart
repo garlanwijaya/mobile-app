@@ -6,13 +6,22 @@ import 'QRScanner.dart';
 import 'Profile.dart';
 
 class NavbarController extends GetxController {
-  var currentIndex = 0.obs;
+  final RxInt currentIndex = 0.obs;
+  final String username;
 
-  final pages = [
-    const BerandaPage(),
-    const QRScannerPage(username: '',),
-    const ProfileSiswa(),
-  ];
+  late final List<Widget> pages;
+
+  NavbarController(this.username);
+
+  @override
+  void onInit() {
+    super.onInit();
+    pages = [
+      BerandaPage(username: username),
+      QRScannerPage(username: username),
+      ProfileSiswa(username: username),
+    ];
+  }
 
   void changePage(int index) {
     currentIndex.value = index;
@@ -20,12 +29,15 @@ class NavbarController extends GetxController {
 }
 
 class NavbarPage extends StatelessWidget {
-  final NavbarController controller = Get.put(NavbarController());
+  final String username;
 
-  NavbarPage({super.key});
+  NavbarPage({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // inject controller dengan username
+    final NavbarController controller = Get.put(NavbarController(username));
+
     return Obx(() => Scaffold(
           body: controller.pages[controller.currentIndex.value],
           bottomNavigationBar: ClipRRect(
@@ -63,4 +75,3 @@ class NavbarPage extends StatelessWidget {
         ));
   }
 }
-

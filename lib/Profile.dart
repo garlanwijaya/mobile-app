@@ -74,7 +74,8 @@ class StudentProfileHeader extends StatelessWidget {
 
 // Halaman Profile Siswa
 class ProfileSiswa extends StatelessWidget {
-  const ProfileSiswa({super.key});
+  final String username;
+  const ProfileSiswa({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +84,8 @@ class ProfileSiswa extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const StudentProfileHeader(
-              name: 'Ashoka Tatang Solihin',
+            StudentProfileHeader(
+              name: username,
               role: 'Student',
               avatarPath: 'assets/avatar.png',
             ),
@@ -108,12 +109,13 @@ class ProfileSiswa extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignUpPage(isStudent: true)),
-                      );
-                    },
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SignUpPage(isStudent: true)),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   fixedSize: const Size(160, 48),
@@ -151,7 +153,8 @@ class ProfileSiswa extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black54),
+                const Icon(Icons.arrow_forward_ios,
+                    size: 16, color: Colors.black54),
               ],
             ),
           ),

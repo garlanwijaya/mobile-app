@@ -28,10 +28,13 @@ class _QRScannerPageState extends State<QRScannerPage> {
     try {
       final data = jsonDecode(code);
       final subject = data['subject'];
-      final meeting = "pertemuan_${data['meeting']}";
+      final meeting = "schedule_${data['meeting']}";
+      print(subject);
+      print(meeting);
+      print(widget.username);
 
       if (subject == null || meeting == null) {
-        throw FormatException("QR tidak valid");
+        throw FormatException("QR tidak valid !!");
       }
 
       await FirebaseFirestore.instance
@@ -40,19 +43,20 @@ class _QRScannerPageState extends State<QRScannerPage> {
           .collection(subject)
           .doc(meeting)
           .set({
-        'hadir': true,
-        'timestamp': DateTime.now(),
+        'status': true,
+        'created_at': DateTime.now(),
       });
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Berhasil absen di $subject - Pertemuan ${data['meeting']}")),
       );
-      Navigator.pop(context);
+      // Navigator.pop(context);
     } catch (e) {
+      print(e);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("QR tidak valid")),
+        const SnackBar(content: Text("QR tidak valid @@")),
       );
       await Future.delayed(const Duration(seconds: 2));
       isProcessing = false;

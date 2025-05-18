@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'SubjectDetailsPage.dart';
 import 'meeting.dart';
 
-
 Widget buildSubjectButton(BuildContext context, String title) {
-  final meetings = generateMockMeetings(); // Data statis untuk simulasi
+  final meetings = generateMockMeetings();
 
   return Container(
     margin: const EdgeInsets.only(bottom: 16),
@@ -41,12 +40,13 @@ Widget buildSubjectButton(BuildContext context, String title) {
 List<Meeting> generateMockMeetings() {
   return List.generate(
     20, // Total 20 pertemuan
-    (index) => Meeting(isPresent: false), // Semua absen (lingkaran merah)
+    (index) => Meeting(isPresent: false),
   );
 }
 
 class BerandaPage extends StatelessWidget {
-  const BerandaPage({super.key});
+  final String username;
+  const BerandaPage({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class BerandaPage extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Color(0xFF4D6FCE),
+                color: const Color(0xFF4D6FCE),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(0),
                   topRight: Radius.circular(0),
@@ -71,10 +71,10 @@ class BerandaPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      "Selamat Datang,\nAshoka!",
-                      style: TextStyle(
+                      "Selamat Datang,\n$username!",
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -93,45 +93,6 @@ class BerandaPage extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Sort Button
-            // Container(
-            //   margin: const EdgeInsets.only(left: 16),
-            //   child: Align(
-            //     alignment: Alignment.centerLeft,
-            //     child: Container(
-            //       height: 40,
-            //       decoration: BoxDecoration(
-            //         color: Colors.lightBlue,
-            //         borderRadius: BorderRadius.circular(16),
-            //       ),
-            //       child: ElevatedButton(
-            //         style: ElevatedButton.styleFrom(
-            //           backgroundColor: Colors.transparent,
-            //           shadowColor: Colors.transparent,
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(24),
-            //           ),
-            //           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            //         ),
-                    // onPressed: () {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(builder: (context) => const SortButtonPage()),
-                    //   );
-                    // },
-            //         child: const Text(
-            //           "sort by day",
-            //           style: TextStyle(
-            //             color: Colors.black,
-            //             fontWeight: FontWeight.bold,
-            //             fontSize: 12,
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
 
             // List Mata Pelajaran
             Expanded(

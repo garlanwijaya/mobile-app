@@ -74,7 +74,8 @@ class GuruProfileHeader extends StatelessWidget {
 
 // Halaman ProfileGuru
 class ProfileGuru extends StatelessWidget {
-  const ProfileGuru({super.key});
+  final String username;
+  const ProfileGuru({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +84,8 @@ class ProfileGuru extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const GuruProfileHeader(
-              name: 'Garland Wijaya',
+            GuruProfileHeader(
+              name: username,
               role: 'Teacher',
               avatarPath: 'assets/avatar.png',
             ),

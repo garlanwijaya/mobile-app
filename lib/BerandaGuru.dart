@@ -32,7 +32,8 @@ Widget buildSubjectButton(BuildContext context, String title) {
 }
 
 class BerandaGuru extends StatelessWidget {
-  const BerandaGuru({super.key});
+    final String username;
+    const BerandaGuru({super.key, required this.username});
 
   // ✅ Fungsi untuk tambah dummy data ke Firestore
   Future<void> addDummyData(BuildContext context) async {
@@ -74,10 +75,10 @@ class BerandaGuru extends StatelessWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Expanded(
                     child: Text(
-                      "Selamat Datang,\nGarland!",
+                      "Selamat Datang,\n$username",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,

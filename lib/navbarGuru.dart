@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'BerandaGuru.dart';
 import 'RekapGuru.dart';
 import 'ProfileGuru.dart';
 
 class NavbarGuruController extends GetxController {
-  var currentIndex = 0.obs;
+  final RxInt currentIndex = 0.obs;
+  final String username;
 
-  final pages = [
-    const BerandaGuru(),
-    const RekapGuru(),
-    const ProfileGuru(),
-  ];
+  late final List<Widget> pages;
+
+  NavbarGuruController(this.username);
+
+  @override
+  void onInit() {
+    super.onInit();
+    pages = [
+      BerandaGuru(username: username),
+      RekapGuru(),
+      ProfileGuru(username: username),
+    ];
+  }
 
   void changePage(int index) {
     currentIndex.value = index;
@@ -19,12 +29,15 @@ class NavbarGuruController extends GetxController {
 }
 
 class NavbarGuruPage extends StatelessWidget {
-  final NavbarGuruController controller = Get.put(NavbarGuruController());
+  final String username;
 
-  NavbarGuruPage({super.key});
+  NavbarGuruPage({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
+    // Inisialisasi controller dengan GetX
+    final NavbarGuruController controller = Get.put(NavbarGuruController(username));
+
     return Obx(() => Scaffold(
           body: controller.pages[controller.currentIndex.value],
           bottomNavigationBar: ClipRRect(

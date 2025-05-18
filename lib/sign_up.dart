@@ -139,9 +139,10 @@ class SignUpPageState extends State<SignUpPage> {
                               final batch = FirebaseFirestore.instance.batch();
 
                               // Create user document
-                              final userRef = FirebaseFirestore.instance.collection('users').doc();
+                              final userRef = FirebaseFirestore.instance.collection('users').doc(username);
                               batch.set(userRef, {
                                 'email': email,
+                                'id' : username,
                                 'username': username,
                                 'role': selectedRole,
                                 'password': password,

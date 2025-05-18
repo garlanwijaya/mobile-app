@@ -37,18 +37,21 @@ class LoginPageState extends State<LoginPage> {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        final userData = querySnapshot.docs.first.data();
+        final userDoc = querySnapshot.docs.first;
+        final userData = userDoc.data();
+        final userId = userDoc.id;
         final role = userData['role'] ?? 'Siswa';
+        final username = userData['username'];
 
         if (role == 'Siswa') {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => NavbarPage()),
+            MaterialPageRoute(builder: (_) => NavbarPage(username: userId)),
           );
         } else if (role == 'Guru') {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => NavbarGuruPage()),
+            MaterialPageRoute(builder: (_) => NavbarGuruPage(username: username)),
           );
         } else {
           _showMessage('Role tidak dikenali.');
