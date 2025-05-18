@@ -72,7 +72,10 @@ class _QRScannerPageState extends State<QRScannerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Scan QR Absensi")),
+      appBar: AppBar(
+        title: const Text("Scan QR Absensi"),
+        automaticallyImplyLeading: false,
+      ),
       body: Stack(
         children: [
           MobileScanner(

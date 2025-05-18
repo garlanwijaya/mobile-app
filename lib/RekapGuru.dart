@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'RekapitulasiMurid.dart';
 
@@ -12,12 +13,56 @@ class _RekapGuruState extends State<RekapGuru> {
   final List<String> subjects = ['Matematika', 'Fisika', 'Kimia'];
   String selectedSubject = 'Fisika'; // Default
 
-  final List<Map<String, dynamic>> dummyData = [
-    {'name': 'Joe', 'hadir': 18, 'tidakHadir': 2},
-    {'name': 'Oka', 'hadir': 16, 'tidakHadir': 4},
-    {'name': 'Xha', 'hadir': 20, 'tidakHadir': 0},
-    {'name': 'Rizz', 'hadir': 19, 'tidakHadir': 1},
-  ];
+  List<Map<String, dynamic>> siswaData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAttendanceData();
+  }
+
+  Future<void> fetchAttendanceData() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final QuerySnapshot userSnapshot = await firestore.collection('users').get();
+
+    List<Map<String, dynamic>> fetchedData = [];
+
+    for (var userDoc in userSnapshot.docs) {
+      final userData = userDoc.data() as Map<String, dynamic>;
+      if (userData['role'] != 'Siswa') continue; // Hanya siswa saja
+
+      final String username = userData['username'] ?? 'unknown';
+
+      int hadir = 0;
+      int tidakHadir = 0;
+
+      final subjectCollection = firestore
+          .collection('users')
+          .doc(userDoc.id)
+          .collection(selectedSubject);
+
+      final QuerySnapshot schedulesSnapshot = await subjectCollection.get();
+
+      for (var doc in schedulesSnapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        if (data['status'] == true) {
+          hadir++;
+        } else {
+          tidakHadir++;
+        }
+      }
+
+      fetchedData.add({
+        'name': username,
+        'hadir': hadir,
+        'tidakHadir': tidakHadir,
+      });
+    }
+
+    setState(() {
+      siswaData = fetchedData;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +99,8 @@ class _RekapGuruState extends State<RekapGuru> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: DropdownButton<String>(
                 value: selectedSubject,
-                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black),
                 dropdownColor: Colors.white,
                 items: subjects.map((subject) {
                   return DropdownMenuItem<String>(
@@ -66,67 +112,69 @@ class _RekapGuruState extends State<RekapGuru> {
                   setState(() {
                     selectedSubject = newValue!;
                   });
+                  fetchAttendanceData(); // Ambil data ulang saat mapel ganti
                 },
               ),
             ),
 
-          // Tabel data dummy
-          Expanded(
-            child: Column(
-              children: [
-                // Header tabel
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
+            // Tabel data siswa
+            Expanded(
+              child: Column(
+                children: [
+                  // Header tabel
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                    ),
+                    child: Row(
+                      children: const [
+                        Expanded(
+                          flex: 3,
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              'NAMA',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              'HADIR',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              'TIDAK HADIR',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 40), // Untuk ikon mata
+                      ],
+                    ),
                   ),
-                  child: Row(
-                    children: const [
-                      Expanded(
-                        flex: 3,
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            'NAMA',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            'HADIR',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            'TIDAK HADIR',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 40), // Untuk ikon mata
-                    ],
-                  ),
-                ),
+
                   // Isi tabel
                   Expanded(
                     child: ListView.builder(
-                      itemCount: dummyData.length,
+                      itemCount: siswaData.length,
                       itemBuilder: (context, index) {
-                        final data = dummyData[index];
+                        final data = siswaData[index];
                         return Container(
                           decoration: BoxDecoration(
-                            border: Border(
+                            border: const Border(
                               left: BorderSide(color: Colors.black),
                               right: BorderSide(color: Colors.black),
                               bottom: BorderSide(color: Colors.black),
@@ -140,7 +188,8 @@ class _RekapGuruState extends State<RekapGuru> {
                                   padding: const EdgeInsets.all(12),
                                   child: Text(
                                     data['name'],
-                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -150,7 +199,8 @@ class _RekapGuruState extends State<RekapGuru> {
                                 child: Text(
                                   data['hadir'].toString(),
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Expanded(
@@ -158,19 +208,24 @@ class _RekapGuruState extends State<RekapGuru> {
                                 child: Text(
                                   data['tidakHadir'].toString(),
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                               IconButton(
-                                icon: const Icon(Icons.remove_red_eye_outlined),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RekapitulasiMurid(name: data['name']),
-                                    ),
-                                  );
-                                },
+                                icon:
+                                    const Icon(Icons.remove_red_eye_outlined),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => RekapitulasiMurid(
+                                            name: data['name'],
+                                            selectedSubject: selectedSubject,
+                                          ),
+                                        ),
+                                      );
+                                    },
                               ),
                             ],
                           ),

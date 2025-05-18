@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'SubjectDetailsPage.dart';
-import 'meeting.dart';
 
-Widget buildSubjectButton(BuildContext context, String title) {
-  final meetings = generateMockMeetings();
-
+Widget buildSubjectButton(BuildContext context, String title, String username) {
   return Container(
     margin: const EdgeInsets.only(bottom: 16),
     child: ElevatedButton(
@@ -13,8 +10,8 @@ Widget buildSubjectButton(BuildContext context, String title) {
           context,
           MaterialPageRoute(
             builder: (context) => SubjectDetailsPage(
+              studentName: username,
               subjectName: title,
-              meetings: meetings,
             ),
           ),
         );
@@ -36,14 +33,6 @@ Widget buildSubjectButton(BuildContext context, String title) {
   );
 }
 
-// Fungsi untuk menghasilkan data pertemuan
-List<Meeting> generateMockMeetings() {
-  return List.generate(
-    20, // Total 20 pertemuan
-    (index) => Meeting(isPresent: false),
-  );
-}
-
 class BerandaPage extends StatelessWidget {
   final String username;
   const BerandaPage({super.key, required this.username});
@@ -59,12 +48,9 @@ class BerandaPage extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF4D6FCE),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(0),
-                  topRight: Radius.circular(0),
-                  bottomLeft: Radius.circular(0),
+              decoration: const BoxDecoration(
+                color: Color(0xFF4D6FCE),
+                borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(32),
                 ),
               ),
@@ -97,19 +83,14 @@ class BerandaPage extends StatelessWidget {
             // List Mata Pelajaran
             Expanded(
               child: Container(
-                height: 400,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 20),
-                    buildSubjectButton(context, "Matematika"),
-                    buildSubjectButton(context, "Fisika"),
-                    buildSubjectButton(context, "Kimia"),
+                    buildSubjectButton(context, "Matematika", username),
+                    buildSubjectButton(context, "Fisika", username),
+                    buildSubjectButton(context, "Kimia", username),
                   ],
                 ),
               ),
