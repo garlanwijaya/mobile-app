@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 // Custom AppBar dengan tombol kembali
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -173,10 +175,15 @@ class _SubjectGenerateQRState extends State<SubjectGenerateQR> {
                   // Tombol Generate QR
                   ElevatedButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(
-                          'QR untuk ${widget.subjectName} - Pertemuan $pertemuan ($durasi menit) akan dibuat!',
-                        ),
+                      final qrData = jsonEncode({
+                        "subject": widget.subjectName,
+                        "meeting": pertemuan,
+                        "duration": durasi,
+                        "timestamp": DateTime.now().toIso8601String(),
+                      });
+
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => QRPreviewPage(qrData: qrData),
                       ));
                     },
                     style: ElevatedButton.styleFrom(
@@ -199,6 +206,27 @@ class _SubjectGenerateQRState extends State<SubjectGenerateQR> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// Halaman preview QR code
+class QRPreviewPage extends StatelessWidget {
+  final String qrData;
+
+  const QRPreviewPage({super.key, required this.qrData});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("QR Code Absensi")),
+      body: Center(
+        child: QrImageView(
+          data: qrData,
+          version: QrVersions.auto,
+          size: 300.0,
         ),
       ),
     );

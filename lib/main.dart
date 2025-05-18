@@ -72,10 +72,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_app/sign_up.dart';
-import 'sign_up.dart';
 import 'firebase_options.dart';
 
 void main() async {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'BerandaPage.dart';
+import 'QRScanner.dart';
 import 'Profile.dart';
 
 class NavbarController extends GetxController {
@@ -9,7 +10,7 @@ class NavbarController extends GetxController {
 
   final pages = [
     const BerandaPage(),
-    // const RekapGuru(),
+    const QRScannerPage(username: '',),
     const ProfileSiswa(),
   ];
 
