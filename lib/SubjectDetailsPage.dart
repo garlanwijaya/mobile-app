@@ -128,15 +128,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double widthFactor;
 
   const CustomAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.height = 60,
     this.widthFactor = 1.0,
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => Size.fromHeight(
-      height + MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top);
+      height + MediaQueryData.fromView(WidgetsBinding.instance.window).padding.top);
 
   @override
   Widget build(BuildContext context) {
