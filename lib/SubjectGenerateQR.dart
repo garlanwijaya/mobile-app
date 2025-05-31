@@ -135,40 +135,40 @@ class _SubjectGenerateQRState extends State<SubjectGenerateQR> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Durasi
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Durasi :", style: TextStyle(fontSize: 16)),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                if (durasi > 5) durasi -= 5;
-                              });
-                            },
-                            icon: const Icon(Icons.arrow_left),
-                          ),
-                          Text(
-                            "$durasi Menit",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                durasi += 5;
-                              });
-                            },
-                            icon: const Icon(Icons.arrow_right),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  // // Durasi
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     const Text("Durasi :", style: TextStyle(fontSize: 16)),
+                  //     Row(
+                  //       children: [
+                  //         IconButton(
+                  //           onPressed: () {
+                  //             setState(() {
+                  //               if (durasi > 5) durasi -= 5;
+                  //             });
+                  //           },
+                  //           icon: const Icon(Icons.arrow_left),
+                  //         ),
+                  //         Text(
+                  //           "$durasi Menit",
+                  //           style: const TextStyle(
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //         IconButton(
+                  //           onPressed: () {
+                  //             setState(() {
+                  //               durasi += 5;
+                  //             });
+                  //           },
+                  //           icon: const Icon(Icons.arrow_right),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
 
                   const SizedBox(height: 30),
 
