@@ -31,7 +31,7 @@ class NavbarController extends GetxController {
 class NavbarPage extends StatelessWidget {
   final String username;
 
-  NavbarPage({Key? key, required this.username}) : super(key: key);
+  const NavbarPage({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {

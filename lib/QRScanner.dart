@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class QRScannerPage extends StatefulWidget {
   final String username;
 
-  const QRScannerPage({Key? key, required this.username}) : super(key: key);
+  const QRScannerPage({super.key, required this.username});
 
   @override
   State<QRScannerPage> createState() => _QRScannerPageState();
@@ -33,7 +33,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
       print(meeting);
       print(widget.username);
 
-      if (subject == null || meeting == null) {
+      if (subject == null) {
         throw FormatException("QR tidak valid !!");
       }
 
